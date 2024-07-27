@@ -1,20 +1,25 @@
-import { useState } from "react";
+import React from "react";
 import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ErrorBoundary from "./components/ErrorBoundary.tsx";
+import Dashboard from "./pages/Dashboard/Dashboard.tsx";
+import Websocket from "./components/Websocket.tsx";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [liveData, setLiveData] = React.useState({});
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Dashboard />,
+      errorElement: <ErrorBoundary />,
+    },
+  ]);
 
   return (
     <>
-      <button
-        className="btn btn-secondary"
-        onClick={() => setCount((val) => val + 1)}
-      >
-        TEST
-      </button>
-      <h1 className="text-3xl font-bold underline text-red-500">
-        Count: {count}
-      </h1>
+      <Websocket liveData={liveData} setLiveData={setLiveData} />
+      <RouterProvider router={router} />
     </>
   );
 }
