@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  max-height: 100vh;
+}
+#root, :root {
+  max-height: 100vh;
+}
+body {
+  max-height: 100vh;
+}
+body > #root {
+  height: 100vh;
+}
