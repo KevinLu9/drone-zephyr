@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard/Dashboard.tsx";
 import Websocket from "./components/Websocket.tsx";
 
 function App() {
-  const [liveData, setLiveData] = React.useState({});
+  // const [liveData, setLiveData] = React.useState({});
 
   const router = createBrowserRouter([
     {
@@ -18,7 +18,8 @@ function App() {
 
   return (
     <>
-      <Websocket liveData={liveData} setLiveData={setLiveData} />
+      <Websocket />
+      {/* <Websocket liveData={liveData} setLiveData={setLiveData} /> */}
       <RouterProvider router={router} />
     </>
   );
