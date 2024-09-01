@@ -1,13 +1,16 @@
 import React from "react";
 
-export default function ArmButton() {
-  const [armed, setArmed] = React.useState(false);
+interface armedButtonProps {
+  isArmed: boolean;
+}
+
+export default function ArmButton({ isArmed }: armedButtonProps) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   function toggleArm() {
     setIsLoading(true);
     setTimeout(() => {
-      setArmed((val) => !val);
+      // setIsArmed((val) => !val);
       setIsLoading(false);
     }, 1000);
   }
@@ -17,7 +20,7 @@ export default function ArmButton() {
       className={`btn btn-bordered rounded-md min-w-40 min-h-10 font-bold text-2xl uppercase ${
         isLoading
           ? "disabled"
-          : armed
+          : isArmed
           ? "bg-green-600 hover:bg-green-800"
           : "bg-red-500 hover:bg-red-800"
       } text-white`}
@@ -25,7 +28,7 @@ export default function ArmButton() {
     >
       {isLoading ? (
         <span className="loading loading-spinner loading-sm text-white" />
-      ) : armed ? (
+      ) : isArmed ? (
         "Armed"
       ) : (
         "Disarmed"

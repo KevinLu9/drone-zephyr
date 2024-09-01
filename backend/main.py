@@ -5,21 +5,10 @@ import json
 import threading
 import socket
 from data_websocket import WebsocketThread
-
-# from picamera2 import Picamera2
-# from picamera2.encoders import H264Encoder
-# from picamera2.outputs import FfmpegOutput
-
-# picam2 = Picamera2()
-# video_config = picam2.create_video_configuration()
-# picam2.configure(video_config)
-
-# encoder = H264Encoder(10000000)
-# output = FfmpegOutput("test.mp4", audio=True)
-
-# picam2.start_recording(encoder, output)
-# time.sleep(10)
-# picam2.stop_recording()
+from picamera2 import Picamera2
+from picamera2.encoders import JpegEncoder
+from picamera2.outputs import FileOutput
+from camera_stream import CameraThread
 
 ser = serial.Serial(
     port="/dev/serial0",
@@ -84,16 +73,19 @@ class UARTRecvDataThread(threading.Thread):
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.connect(("8.8.8.8", 0))
 host = s.getsockname()[0]  # socket.gethostbyname_ex(socket.gethostname())[2][0]
-port = 8001
+websocket_port = 8001
+cam_port = 8002
 
-websocket_thread = WebsocketThread(host, port)
+websocket_thread = WebsocketThread(host, websocket_port)
 uart_send_thread = UARTSendDataThread()
 uart_recv_thread = UARTRecvDataThread(websocket_thread)
-
+camera_thread = CameraThread(host, cam_port)
 
 uart_send_thread.start()
 uart_recv_thread.start()
 websocket_thread.start()
+camera_thread.start()
+
 
 input("PRESS ENTER TO CLOSE")
 print("CLOSING Threads")
@@ -103,4 +95,5 @@ websocket_thread.close()
 uart_send_thread.join()
 uart_recv_thread.join()
 websocket_thread.join()
+camera_thread.join()
 print("[TERMINATION] Program Terminated Successfully")
